@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.not;
 public class CreatePlayerTests extends BaseTest {
 
     @Test(dataProvider = "validRolesProvider", dataProviderClass = PlayerRoleDataProvider.class)
-    public void validFlowTest(UserRole role) {
+    public void validRolesTest(UserRole role) {
         PlayerRequestDto reqDto = PlayerRequestDto.generatePlayer();
 
         Response response = playerService.createPlayer(role, reqDto);
@@ -30,5 +30,14 @@ public class CreatePlayerTests extends BaseTest {
         Assert.assertNotNull(respDto);
 
         PlayerAssert.assertEquals(reqDto, respDto);
+    }
+
+    @Test(dataProvider = "nonCreatePermissionProvide", dataProviderClass = PlayerRoleDataProvider.class)
+    public void nonPermissionRolesTest(UserRole role) {
+        PlayerRequestDto reqDto = PlayerRequestDto.generatePlayer();
+
+        Response response = playerService.createPlayer(role, reqDto);
+
+        Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_FORBIDDEN);
     }
 }

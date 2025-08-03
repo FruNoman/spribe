@@ -7,10 +7,8 @@ import java.util.stream.Collectors;
 public enum UserRole {
     SUPERVISOR("supervisor"),
     ADMIN("admin"),
-    USER("user"),
 
-    EMPTY(""),
-    BLANK_SPACE(" "),
+    USER("user"),
     INVALID_ROLE("invalidRole");
 
     private final String role;
@@ -21,17 +19,5 @@ public enum UserRole {
 
     public String getRole() {
         return role;
-    }
-
-    public static List<UserRole> validCreationRoles() {
-        return Arrays.asList(SUPERVISOR, ADMIN);
-    }
-
-    public static List<String> invalidRoles() {
-        return Arrays.stream(new UserRole[]{
-                        EMPTY, BLANK_SPACE, INVALID_ROLE
-                })
-                .map(UserRole::getRole)
-                .collect(Collectors.toList());
     }
 }
