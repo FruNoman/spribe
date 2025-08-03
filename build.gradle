@@ -37,5 +37,11 @@ dependencies {
 }
 
 test {
-	useTestNG()
+	useTestNG() {
+		if (project.hasProperty('testngSuites')) {
+			suites project.testngSuites.split(',')
+		} else {
+			suites 'src/test/resources/suites/all_testng.xml'
+		}
+	}
 }

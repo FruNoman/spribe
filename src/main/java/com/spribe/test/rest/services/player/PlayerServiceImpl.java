@@ -2,7 +2,6 @@ package com.spribe.test.rest.services.player;
 
 import com.spribe.test.rest.controller.RequestBuilder;
 import com.spribe.test.rest.services.player.dto.requests.PlayerRequestDto;
-import com.spribe.test.rest.endpoints.Endpoints;
 import com.spribe.test.rest.services.player.enums.UserRole;
 import io.restassured.response.Response;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,12 +14,27 @@ public class PlayerServiceImpl implements PlayerService {
     @Value("${base.url}")
     protected String baseUrl;
 
+    @Value("${endpoint.player.get}")
+    private String playerGet;
+
+    @Value("${endpoint.player.get.all}")
+    private String playerGetAll;
+
+    @Value("${endpoint.player.create}")
+    private String playerCreate;
+
+    @Value("${endpoint.player.update}")
+    private String playerUpdate;
+
+    @Value("${endpoint.player.delete}")
+    private String playerDelete;
+
     public Response getPlayer(int playerId) {
         return RequestBuilder.newRequest()
                 .baseUri(baseUrl)
                 .body(Map.of("playerId", playerId))
                 .when()
-                .post(Endpoints.PLAYER_GET);
+                .post(playerGet);
     }
 
 
@@ -28,7 +42,7 @@ public class PlayerServiceImpl implements PlayerService {
         return RequestBuilder.newRequest()
                 .baseUri(baseUrl)
                 .when()
-                .get(Endpoints.PLAYER_GET_ALL);
+                .get(playerGetAll);
     }
 
     public Response createPlayer(UserRole userRole, PlayerRequestDto requestDto) {
@@ -40,20 +54,20 @@ public class PlayerServiceImpl implements PlayerService {
                 .queryParam("password", requestDto.getPassword())
                 .queryParam("role", requestDto.getRole())
                 .queryParam("screenName", requestDto.getScreenName())
-                .get(Endpoints.PLAYER_CREATE + userRole.getRole());
+                .get(playerCreate + userRole.getRole());
     }
 
     public Response updatePlayer(UserRole userRole, int id, PlayerRequestDto requestDto) {
         return RequestBuilder.newRequest()
                 .baseUri(baseUrl)
                 .body(requestDto)
-                .patch(Endpoints.PLAYER_UPDATE + userRole.getRole() + "/" + id);
+                .patch(playerUpdate + userRole.getRole() + "/" + id);
     }
 
     public Response deletePlayer(UserRole userRole, int playerId) {
         return RequestBuilder.newRequest()
                 .baseUri(baseUrl)
                 .body(Map.of("playerId", playerId))
-                .delete(Endpoints.PLAYER_DELETE + userRole.getRole());
+                .delete(playerDelete + userRole.getRole());
     }
 }

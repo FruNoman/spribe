@@ -40,7 +40,7 @@ public class PlayerTests extends BaseTest {
     public void initialCreatePlayer() {
         PlayerRequestDto requestDto = PlayerRequestDto.generatePlayer();
 
-        Response response = playerService.createPlayer(UserRole.INVALID_ROLE, requestDto);
+        Response response = playerService.createPlayer(UserRole.SUPERVISOR, requestDto);
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
 
         PlayerResponseDto dto = response.as(PlayerResponseDto.class);
