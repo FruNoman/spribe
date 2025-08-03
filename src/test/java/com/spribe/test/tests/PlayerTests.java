@@ -1,89 +1,72 @@
 package com.spribe.test.tests;
 
-import com.spribe.test.rest.controller.RequestBuilder;
+import com.spribe.test.rest.services.player.PlayerService;
+import com.spribe.test.rest.services.player.dto.requests.PlayerRequestDto;
+import com.spribe.test.rest.services.player.dto.response.PlayerResponseDto;
+import com.spribe.test.rest.services.player.enums.UserRole;
+import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class PlayerTests extends BaseTest{
+import java.util.List;
+
+public class PlayerTests extends BaseTest {
+    @Autowired
+    private PlayerService playerService;
+
     @Test
-    public void initialCheckGetAll(){
-        RequestBuilder.newRequest()
-                .baseUri(baseUrl)
-                .get("/player/get/all")
-                .then()
-                .statusCode(HttpStatus.SC_OK);
+    public void initialCheckGetAll() {
+        Response response = playerService.getAllPlayers();
+
+        Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
+        List<PlayerResponseDto> players = response.jsonPath().getList("players", PlayerResponseDto.class);
+        Assert.assertNotNull(players);
+        Assert.assertFalse(players.isEmpty());
     }
 
     @Test
-    public void initialCheckGetPlayer(){
-        RequestBuilder.newRequest()
-                .baseUri(baseUrl)
-                .body("{ \"playerId\": 1 }")
-                .post("/player/get")
-                .then()
-                .statusCode(HttpStatus.SC_OK);
+    public void initialCheckGetPlayer() {
+        Response response = playerService.getPlayer(142302909);
+
+        Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
+        Assert.assertFalse(response.getBody().asString().trim().isEmpty(), "Response body is empty");
+        PlayerResponseDto dto = response.as(PlayerResponseDto.class);
+        Assert.assertEquals(dto.getId(), 142302909);
     }
 
     @Test
     public void initialCreatePlayer() {
-        String editorLogin = "supervisor";
+        PlayerRequestDto requestDto = PlayerRequestDto.generatePlayer();
 
-        String uniqueSuffix = String.valueOf(System.currentTimeMillis());
+        Response response = playerService.createPlayer(UserRole.INVALID_ROLE, requestDto);
+        Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
 
-        RequestBuilder.newRequest()
-                .baseUri(baseUrl)
-                .contentType("application/json")
-                .queryParam("age", 30)
-                .queryParam("gender", "male")
-                .queryParam("login", "user" + uniqueSuffix)
-                .queryParam("password", "pass1234")
-                .queryParam("role", "user")
-                .queryParam("screenName", "screen" + uniqueSuffix)
-                .get("/player/create/" + editorLogin)
-                .then()
-                .log().all()
-                .statusCode(HttpStatus.SC_OK);
+        PlayerResponseDto dto = response.as(PlayerResponseDto.class);
+
+        Assert.assertNotNull(dto);
+        Assert.assertEquals(dto.getLogin(), requestDto.getLogin());
     }
 
     @Test
     public void updatePlayer() {
-        String editorLogin = "supervisor";
-        int targetUserId = 441590145;
+        int targetUserId = 202777521;
 
-        String requestBody = """
-        {
-            "age": 35,
-            "screenName": "UpdatedName123",
-            "password": "newPass456"
-        }
-    """;
+        PlayerRequestDto requestDto = PlayerRequestDto.generatePlayer();
 
-        RequestBuilder.newRequest()
-                .baseUri(baseUrl)
-                .contentType("application/json")
-                .body(requestBody)
-                .patch("/player/update/{editor}/{id}", editorLogin, targetUserId)
-                .then()
-                .log().all()
-                .statusCode(HttpStatus.SC_OK);
+        Response response = playerService.updatePlayer(UserRole.SUPERVISOR, targetUserId, requestDto);
+        Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
+        Assert.assertFalse(response.getBody().asString().trim().isEmpty(), "Response body is empty");
+        PlayerResponseDto dto = response.as(PlayerResponseDto.class);
+        Assert.assertEquals(dto.getScreenName(), requestDto.getScreenName());
     }
 
     @Test
     public void deletePlayerById() {
-        String editor = "supervisor";
-        int playerIdToDelete = 441590145;
-        String requestBody = """
-        {
-            "playerId": %d
-        }
-    """.formatted(playerIdToDelete);
-        RequestBuilder.newRequest()
-                .baseUri(baseUrl)
-                .contentType("application/json")
-                .body(requestBody)
-                .delete("/player/delete/" + editor)
-                .then()
-                .log().all()
-                .statusCode(204);
+        int playerIdToDelete = 2120815003;
+
+        Response response = playerService.deletePlayer(UserRole.SUPERVISOR, playerIdToDelete);
+        Assert.assertEquals(response.getStatusCode(), 204);
     }
 }
