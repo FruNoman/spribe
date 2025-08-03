@@ -2,6 +2,8 @@ package com.spribe.test.asserts;
 
 import com.spribe.test.rest.services.player.dto.requests.PlayerRequestDto;
 import com.spribe.test.rest.services.player.dto.response.PlayerResponseDto;
+import io.restassured.response.Response;
+import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 public class PlayerAssert {
@@ -25,5 +27,9 @@ public class PlayerAssert {
         }
 
         softAssert.assertAll();
+    }
+
+    public static void assertBodyNotEmpty(Response response){
+        Assert.assertFalse(response.getBody().asString().trim().isEmpty(), "Response body is empty");
     }
 }

@@ -23,10 +23,8 @@ public enum UserRole {
         return role;
     }
 
-    public static List<String> validCreationRoles() {
-        return Arrays.stream(new UserRole[]{SUPERVISOR, ADMIN})
-                .map(UserRole::getRole)
-                .collect(Collectors.toList());
+    public static List<UserRole> validCreationRoles() {
+        return Arrays.asList(SUPERVISOR, ADMIN);
     }
 
     public static List<String> invalidRoles() {
