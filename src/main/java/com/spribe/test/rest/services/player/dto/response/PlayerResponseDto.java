@@ -9,7 +9,7 @@ public class PlayerResponseDto {
     private Integer age;
     private String role;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -29,7 +29,7 @@ public class PlayerResponseDto {
         return gender;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 

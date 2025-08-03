@@ -1,21 +1,16 @@
 package com.spribe.test.tests;
 
-import com.spribe.test.rest.services.player.PlayerService;
 import com.spribe.test.rest.services.player.dto.requests.PlayerRequestDto;
 import com.spribe.test.rest.services.player.dto.response.PlayerResponseDto;
 import com.spribe.test.rest.services.player.enums.UserRole;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.List;
 
 public class PlayerTests extends BaseTest {
-    @Autowired
-    private PlayerService playerService;
-
     @Test
     public void initialCheckGetAll() {
         Response response = playerService.getAllPlayers();
