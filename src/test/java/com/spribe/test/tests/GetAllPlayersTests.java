@@ -7,6 +7,7 @@ import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 public class GetAllPlayersTests extends BaseTest {
     private List<PlayerResponseDto> createdPlayers = new ArrayList<>();
 
-    @BeforeClass
+    @BeforeMethod
     public void setupPlayers() {
         int playersToCreate = 5;
         createdPlayers.addAll(
