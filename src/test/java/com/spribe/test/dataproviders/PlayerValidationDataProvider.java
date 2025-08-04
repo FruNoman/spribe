@@ -46,5 +46,13 @@ public class PlayerValidationDataProvider {
 
         return cases.toArray(new Object[0][0]);
     }
+
+    @DataProvider(name = "invalidPlayerIds")
+    public Object[][] invalidPlayerIds() {
+        return new Object[][] {
+                {0},
+                {Integer.MIN_VALUE}
+        };
+    }
 }
 

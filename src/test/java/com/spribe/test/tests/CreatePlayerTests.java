@@ -46,7 +46,8 @@ public class CreatePlayerTests extends BaseTest {
 
     @Test(dataProvider = "invalidPlayerDataProvider",
             dataProviderClass = PlayerValidationDataProvider.class)
-    public void invalidPlayerDataValidationTest(PlayerRequestDto invalidReqDto, String description) {
+    public void invalidPlayerDataValidationTest(PlayerRequestDto invalidReqDto,
+                                                String description) {
         Response response = playerService.createPlayer(UserRole.SUPERVISOR, invalidReqDto);
 
         Assert.assertEquals(response.getStatusCode(),

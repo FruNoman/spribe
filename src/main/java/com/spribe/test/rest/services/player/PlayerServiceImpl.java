@@ -29,7 +29,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Value("${endpoint.player.delete}")
     private String playerDelete;
 
-    public Response getPlayer(int playerId) {
+    public Response getPlayer(Integer playerId) {
         return RequestBuilder.newRequest()
                 .baseUri(baseUrl)
                 .body(Map.of("playerId", playerId))
@@ -57,14 +57,14 @@ public class PlayerServiceImpl implements PlayerService {
                 .get(playerCreate + userRole.getRole());
     }
 
-    public Response updatePlayer(UserRole userRole, int id, PlayerRequestDto requestDto) {
+    public Response updatePlayer(UserRole userRole, Integer id, PlayerRequestDto requestDto) {
         return RequestBuilder.newRequest()
                 .baseUri(baseUrl)
                 .body(requestDto)
                 .patch(playerUpdate + userRole.getRole() + "/" + id);
     }
 
-    public Response deletePlayer(UserRole userRole, int playerId) {
+    public Response deletePlayer(UserRole userRole, Integer playerId) {
         return RequestBuilder.newRequest()
                 .baseUri(baseUrl)
                 .body(Map.of("playerId", playerId))

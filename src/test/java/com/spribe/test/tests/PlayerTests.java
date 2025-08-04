@@ -1,5 +1,6 @@
 package com.spribe.test.tests;
 
+import com.spribe.test.asserts.PlayerAssert;
 import com.spribe.test.rest.services.player.dto.requests.PlayerRequestDto;
 import com.spribe.test.rest.services.player.dto.response.PlayerResponseDto;
 import com.spribe.test.rest.services.player.enums.UserRole;
@@ -21,28 +22,7 @@ public class PlayerTests extends BaseTest {
         Assert.assertFalse(players.isEmpty());
     }
 
-    @Test
-    public void initialCheckGetPlayer() {
-        Response response = playerService.getPlayer(142302909);
 
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
-        Assert.assertFalse(response.getBody().asString().trim().isEmpty(), "Response body is empty");
-        PlayerResponseDto dto = response.as(PlayerResponseDto.class);
-        Assert.assertEquals(dto.getId(), 142302909);
-    }
-
-    @Test
-    public void initialCreatePlayer() {
-        PlayerRequestDto requestDto = PlayerRequestDto.generatePlayer();
-
-        Response response = playerService.createPlayer(UserRole.SUPERVISOR, requestDto);
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
-
-        PlayerResponseDto dto = response.as(PlayerResponseDto.class);
-
-        Assert.assertNotNull(dto);
-        Assert.assertEquals(dto.getLogin(), requestDto.getLogin());
-    }
 
     @Test
     public void updatePlayer() {

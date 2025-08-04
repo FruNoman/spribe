@@ -32,4 +32,22 @@ public class PlayerAssert {
     public static void assertBodyNotEmpty(Response response){
         Assert.assertFalse(response.getBody().asString().trim().isEmpty(), "Response body is empty");
     }
+
+    public static void assertEquals(PlayerResponseDto expected, PlayerResponseDto actual) {
+        SoftAssert softAssert = new SoftAssert();
+
+        softAssert.assertNotNull(actual, "Actual PlayerResponseDto should not be null");
+
+        if (actual != null) {
+            softAssert.assertEquals(actual.getId(), expected.getId(), "ID mismatch:");
+            softAssert.assertEquals(actual.getLogin(), expected.getLogin(), "Login mismatch:");
+            softAssert.assertEquals(actual.getPassword(), expected.getPassword(), "Password mismatch:");
+            softAssert.assertEquals(actual.getScreenName(), expected.getScreenName(), "ScreenName mismatch:");
+            softAssert.assertEquals(actual.getGender(), expected.getGender(), "Gender mismatch:");
+            softAssert.assertEquals(actual.getAge(), expected.getAge(), "Age mismatch:");
+            softAssert.assertEquals(actual.getRole(), expected.getRole(), "Role mismatch:");
+        }
+
+        softAssert.assertAll();
+    }
 }
