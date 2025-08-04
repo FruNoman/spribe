@@ -33,6 +33,10 @@ public class PlayerAssert {
         Assert.assertFalse(response.getBody().asString().trim().isEmpty(), "Response body is empty");
     }
 
+    public static void assertBodyEmpty(Response response){
+        Assert.assertTrue(response.getBody().asString().trim().isEmpty(), "Response body is not empty");
+    }
+
     public static void assertEquals(PlayerResponseDto expected, PlayerResponseDto actual) {
         SoftAssert softAssert = new SoftAssert();
 
