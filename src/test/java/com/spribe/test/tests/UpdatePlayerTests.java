@@ -1,6 +1,5 @@
 package com.spribe.test.tests;
 
-import com.spribe.test.asserts.PlayerAssert;
 import com.spribe.test.rest.services.player.dto.requests.PlayerRequestDto;
 import com.spribe.test.rest.services.player.dto.response.PlayerResponseDto;
 import com.spribe.test.rest.services.player.enums.UserRole;
@@ -9,21 +8,7 @@ import org.apache.http.HttpStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.List;
-
-public class PlayerTests extends BaseTest {
-    @Test
-    public void initialCheckGetAll() {
-        Response response = playerService.getAllPlayers();
-
-        Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
-        List<PlayerResponseDto> players = response.jsonPath().getList("players", PlayerResponseDto.class);
-        Assert.assertNotNull(players);
-        Assert.assertFalse(players.isEmpty());
-    }
-
-
-
+public class UpdatePlayerTests extends BaseTest{
     @Test
     public void updatePlayer() {
         int targetUserId = 202777521;
@@ -35,13 +20,5 @@ public class PlayerTests extends BaseTest {
         Assert.assertFalse(response.getBody().asString().trim().isEmpty(), "Response body is empty");
         PlayerResponseDto dto = response.as(PlayerResponseDto.class);
         Assert.assertEquals(dto.getScreenName(), requestDto.getScreenName());
-    }
-
-    @Test
-    public void deletePlayerById() {
-        int playerIdToDelete = 2120815003;
-
-        Response response = playerService.deletePlayer(UserRole.SUPERVISOR, playerIdToDelete);
-        Assert.assertEquals(response.getStatusCode(), 204);
     }
 }

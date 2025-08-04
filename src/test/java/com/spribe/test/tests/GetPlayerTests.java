@@ -48,7 +48,7 @@ public class GetPlayerTests extends BaseTest {
 
     @Test(dataProvider = "invalidPlayerIds",
             dataProviderClass = PlayerValidationDataProvider.class)
-    public void getPlayerWithInvalidId_shouldReturnBadRequest(int invalidId) {
+    public void invalidIdTests(Integer invalidId) {
         Response response = playerService.getPlayer(invalidId);
 
         Assert.assertEquals(response.getStatusCode(),
